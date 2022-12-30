@@ -2,63 +2,56 @@ import requests
 import bs4
 import csv
 from DataModel import DataModel
+import time
 
+# import lxml
 dataModel = DataModel()
 
 
-def getData(url):
-    pageUrlString = "?pst=2018&pkw=Yazilim%20Muhendisi&cp="
+def getData(url, gBand):
+    req = requests.get(url)
+    soup = bs4.BeautifulSoup(req.content, "html5lib")
+    content = soup.findAll('a', attrs={'class': 'position-absolute d-flex align-items-center justify-content-center'})
     counter = 0
-    pages = 20
-    for i in range(pages):
-        requestsUrl = ""
-        requestUrl = url + str(i) + pageUrlString + str(i)
-        r = requests.get(requestUrl)
-        soup = bs4.BeautifulSoup(r.content, 'html5lib')
-        table = soup.find('div', attrs={'class': 'list-items-wrapper'})
-
-        for row in table.findAll('div', attrs={'class': 'k-ad-card-content'}):
-            sponsor = row.find('span', attrs={'class': 'sponsor'})
-            if not sponsor:
-                job_name = row.h3.text
-                comp_name = row.find('span', attrs={'class': 'kad-card-subtitle'}).text
-                job_location = row.find('div', attrs={'class': 'kad-card-location'}).text
-                job_type = row.find('span', attrs={'class': 'badge badge-primary'}).text
-                job_add_date = row.find('span', attrs={'class': 'ad-date'}).text
-                dataModel.addNewJobToAllJobs(job_name, comp_name, job_location, job_type, job_add_date)
-
+    for card in content:
+        try:
+            pageUrl = "https://www.atasunoptik.com.tr/" + card['href']
+            r = requests.get(pageUrl)
+            soup2 = bs4.BeautifulSoup(r.content, "html5lib")
+            price = soup2.find('div', attrs={'class': 'd-flex align-items-end p-price'}).span.text
+            gD1 = soup2.findAll('span', attrs={'class': 'col-4 col-sm col-hg-auto d-flex flex-column align-items-center '
+                                                       'justify-content-center'})[0].span.text
+            gD2 = soup2.findAll('span', attrs={'class': 'col-4 col-sm col-hg-auto d-flex flex-column align-items-center '
+                                                       'justify-content-center'})[1].span.text
+            gD3 = soup2.findAll('span', attrs={'class': 'col-4 col-sm col-hg-auto d-flex flex-column align-items-center '
+                                                              'justify-content-center'})[2].span.text
+        except:
+            print("error")
+        finally:
+            dataModel.addNewGlassesToAllGlasses(gBand, price, gD1, gD2, gD3)
             counter = counter + 1
-    print(dataModel.printAllData())
-    print(counter)
-    exportToCsv()
+            print(counter)
 
-    # r = requests.get(url)
-    # soup = bs4.BeautifulSoup(r.content, 'html5lib')
-    #
-    # table = soup.find('div', attrs={'class': 'lister-list'})
-    #
-    # for row in table.findAll('div', attrs={'class': 'lister-item-content'}):
-    #     print(row.h3.a.text)
-
-    # print(soup.prettify())
-
-
-def print_hi(name):
-    url = "https://www.kariyer.net/is-ilanlari/yazilim+muhendisi-"
-    getData(url)
+    dataModel.printAllData()
 
 
 def exportToCsv():
-    filename = 'jobs.csv'
-    with open(filename, 'w', newline='',encoding='utf-8') as f:
+    filename = 'glasses.csv'
+    with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        w = csv.DictWriter(f, ['jobName', "compName", "jobLocation", "jobType", "jobAddDate"])
+        w = csv.DictWriter(f, ['Marka', "Fiyat", "Cam genişliği", "Gözlük genişliği", "Gözlük Uzunluğu"])
         w.writeheader()
-        for job in dataModel.allJobs:
-            writer.writerow([job["jobName"], job['compName'], job['jobLocation'], job['jobType'], job['jobAddDate']])
+        for glasses in dataModel.allGlasses:
+            writer.writerow([glasses["gBand"], glasses['gPrice'], glasses['gD1'], glasses['gD2'], glasses['gD3']])
 
 
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000&st=1", 'Ray-Ban')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=inesta", 'Inesta')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=prada", 'Prada')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=emporio-armani", 'Emporio Armani')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=mustang", 'Mustang')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=guess", 'Guess')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=vogue", 'Vogue')
+    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=unofficial", 'Unofficial')
+    exportToCsv()

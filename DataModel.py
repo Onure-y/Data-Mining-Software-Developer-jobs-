@@ -1,21 +1,40 @@
 class DataModel:
     def __init__(self):
-        self.allJobs = []
+        self.allGlasses = []
 
-    def addNewJobToAllJobs(self, job_name, comp_name, job_location, job_type, job_add_date):
-        job = {}
-        job['jobName'] = ' '.join(job_name.split('\n')[1].split())
-        job['compName'] = ' '.join(comp_name.split('\n')[1].split())
-        job['jobLocation'] = ' '.join(job_location.split('\n')[1].split())
-        job['jobType'] = job_type
-        job['jobAddDate'] = job_add_date
-        self.allJobs.append(job)
+    def addNewGlassesToAllGlasses(self, gBand, gPrice, gD1, gD2, gD3, ):
+        try:
+            glasses = {}
+            glasses['gBand'] = gBand
+            glasses['gPrice'] = self.getExactPrice(gPrice)
+            glasses['gD1'] = self.getExactValue(gD1)
+            glasses['gD2'] = self.getExactValue(gD2)
+            glasses['gD3'] = self.getExactValue(gD3)
+        except:
+            print('error')
+            glasses['gBand'] = gBand
+            glasses['gPrice'] = ""
+            glasses['gD1'] = ""
+            glasses['gD2'] = ""
+            glasses['gD3'] = ""
+        finally:
+            self.allGlasses.append(glasses)
 
     def getLength(self):
-        print(len(self.allJobs))
+        print(len(self.allGlasses))
+
+    def getExactPrice(self, price):
+        price = price.split('.')
+        price = price[0] + price[1]
+        price = price.split(',')
+        price = price[0]
+        return price
+
+    def getExactValue(self,value):
+        value = value.split(' ')
+        value = value[0]
+        return value
 
     def printAllData(self):
-        for job in self.allJobs:
-            print(job)
-
-
+        for glasses in self.allGlasses:
+            print(glasses)
