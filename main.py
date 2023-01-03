@@ -26,7 +26,7 @@ def getData(url, gBand):
             gD3 = soup2.findAll('span', attrs={'class': 'col-4 col-sm col-hg-auto d-flex flex-column align-items-center '
                                                               'justify-content-center'})[2].span.text
         except:
-            print("error")
+            print("error while getting the data")
         finally:
             dataModel.addNewGlassesToAllGlasses(gBand, price, gD1, gD2, gD3)
             counter = counter + 1
@@ -46,12 +46,23 @@ def exportToCsv():
 
 
 if __name__ == '__main__':
-    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000&st=1", 'Ray-Ban')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=inesta", 'Inesta')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=prada", 'Prada')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=emporio-armani", 'Emporio Armani')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=mustang", 'Mustang')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=guess", 'Guess')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=vogue", 'Vogue')
-    getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=unofficial", 'Unofficial')
+    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=1", 'Ray-Ban')
+    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=2", 'Ray-Ban')
+    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=3", 'Ray-Ban')
+    getData("https://www.atasunoptik.com.tr/ray-ban-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=4", 'Ray-Ban')
+    getData("https://www.atasunoptik.com.tr/inesta-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=1", 'Inesta')
+    getData("https://www.atasunoptik.com.tr/inesta-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=2", 'Inesta')
+    getData("https://www.atasunoptik.com.tr/inesta-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=3", 'Inesta')
+    getData("https://www.atasunoptik.com.tr/inesta-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0&p=4", 'Inesta')
+    getData("https://www.atasunoptik.com.tr/unofficial-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0p=1", 'Unofficial')
+    getData("https://www.atasunoptik.com.tr/unofficial-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0p=2", 'Unofficial')
+    getData("https://www.atasunoptik.com.tr/unofficial-marka-gunes-gozlugu-modelleri?ps=5000%2C5000st%3D0p=3", 'Unofficial')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=prada", 'Prada')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=emporio-armani", 'Emporio Armani')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=mustang", 'Mustang')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=guess", 'Guess')
+    # getData("https://www.atasunoptik.com.tr/vogue-marka-gunes-gozlugu-modelleri?ps=5000&st=1", 'Vogue')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=osse", 'Osse')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=boss", 'Boss')
+    # getData("https://www.atasunoptik.com.tr/gunes-gozlugu?m=unofficial", 'Unofficial')
     exportToCsv()

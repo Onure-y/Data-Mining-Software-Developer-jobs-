@@ -11,7 +11,7 @@ class DataModel:
             glasses['gD2'] = self.getExactValue(gD2)
             glasses['gD3'] = self.getExactValue(gD3)
         except:
-            print('error')
+            print('error wrong data type')
             glasses['gBand'] = gBand
             glasses['gPrice'] = ""
             glasses['gD1'] = ""
@@ -24,8 +24,9 @@ class DataModel:
         print(len(self.allGlasses))
 
     def getExactPrice(self, price):
-        price = price.split('.')
-        price = price[0] + price[1]
+        if len(price) > 9:
+            price = price.split('.')
+            price = price[0] + price[1]
         price = price.split(',')
         price = price[0]
         return price
